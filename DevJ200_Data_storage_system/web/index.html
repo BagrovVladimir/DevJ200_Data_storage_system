@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>main</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <h1>Create new record</h1>
+            <form action="Viewlist" method="GET">
+                <h2>Address: </h2>
+                <h4>idAddress: </h4>
+                <input type="text" name="idAddress" />
+                <h4>city: </h4>
+                <input type="text" name="city" />
+                <h4>street: </h4>
+                <input type="text" name="street" />
+                <h4>num: </h4>
+                <input type="text" name="num" />
+                <h4>subnum: </h4>
+                <input type="text" name="subnum" />
+                <h4>flat: </h4>
+                <input type="text" name="flat" />
+                <h4>extra: </h4>
+                <input type="text" name="extra" />
+                <h2>Client: </h2>
+                <h4>idClient: </h4>
+                <input type="text" name="idClient" />
+                <h4>type: </h4>
+                <input type="text" name="city" />
+                <h4>street: </h4>
+                <input type="text" name="type" />
+                <h4>model: </h4>
+                <input type="text" name="model" />
+                <h4>ip: </h4>
+                <input type="text" name="ip" />
+                <p><input type="submit" name="create" value="Create" /></p> 
+            </form>
+            <form action="update" method="GET">
+                <p><input type="submit" name="update" value="Go to Update the Client" /></p> 
+            </form>
+            <form action="delete" method="GET">
+                <p><input type="submit" name="delete" value="Go to Delete the Client" /></p> 
+            </form>
+            <form  action="viewList" method="GET">
+                <p><input type="submit" name="viewList" value="Go to View the List of Clients" /></p> 
+            </form>
+        </div>
+    </body>
+</html>
