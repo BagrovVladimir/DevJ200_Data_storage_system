@@ -17,8 +17,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Владимир
  */
-@WebServlet(name = "Create", urlPatterns = {"/create"})
+@WebServlet(name = "сreate", urlPatterns = {"/create"})
 public class Create extends HttpServlet {
+    
+    HttpServletRequest request;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -60,7 +62,6 @@ public class Create extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -69,7 +70,7 @@ public class Create extends HttpServlet {
             out.println("<body>");
             out.println("<div>");
             out.println("<h1>Create new record</h1>");
-            out.println("<form action=\"viewlist\" method=\"GET\">");
+            out.println("<form action=\"create\" method=\"POST\">");
             out.println("<h2>Address: </h2>");
             out.println("<h3>idAddress: </h3>");
             out.println("<input type=\"text\" name=\"idAddress\"  />");
@@ -112,11 +113,22 @@ public class Create extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-//    @Override
-//    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        processRequest(request, response);
-//    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        this.request = request;
+        
+        int idAddress = toInt(request.getParameter("idAddress"));
+        String city = request.getParameter("city");
+        String street = request.getParameter("street");
+        int num = toInt(request.getParameter("num"));
+        int subnum = toInt(request.getParameter("subnum"));
+        int flat = toInt(request.getParameter("flat"));
+        String extra = request.getParameter("extra");
+        
+        checkParametersAddress(city, street, num, extra);
+        
+    }
 
     /**
      * Returns a short description of the servlet.
@@ -127,5 +139,67 @@ public class Create extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    public int toInt(String s){
+        try{
+            int i = Integer.parseInt(s);
+            return i;
+        } catch (NumberFormatException nfe) { 
+            System.out.println("NumberFormatException" + nfe.getMessage());
+            return 0;
+        }
+    }
+    
+    public boolean checkParametersAddress(String city, String street, int num, String extra){
+        boolean rez = false;
+        String regex = "А-Яа-я0-9 -";
+        
+        if (city.trim().isEmpty()) {
+            request.setAttribute("msg", "Поле \"city\" должно быть заполнено");
+            return rez;
+        } else{
+                if (!city.replaceAll("[" + regex + "]", "").isEmpty()) {
+                    request.setAttribute("msg", "В поле \"city\" должны быть символы только русского алфавита");
+                    return rez;
+                } else {
+                   if (city.length()>100) {
+                    request.setAttribute("msg", "В поле \"city\" не должно быть больше 100 символов");
+                    return rez; 
+                }
+            }
+        }
+        
+        if (street.trim().isEmpty()) {
+           request.setAttribute("msg", "Поле \"street\" должно быть заполнено");
+           return rez;
+        } else{
+                if (!street.replaceAll("[" + regex + "]", "").isEmpty()) {
+                    request.setAttribute("msg", "В поле \"street\" должны быть символы только русского алфавита");
+                    return rez;
+                } else {
+                   if (street.length()>100) {
+                    request.setAttribute("msg", "В поле \"street\" не должно быть больше 100 символов");
+                    return rez; 
+                }
+            }
+        }
+
+        if (num == 0) {
+            request.setAttribute("msg", "Поле \"num\" не должно равняться нулю");
+            return rez;
+        }
+        
+        if (!extra.replaceAll("[" + regex + "]", "").isEmpty()) {
+            request.setAttribute("msg", "В поле \"extra\" должны быть символы только русского алфавита");
+            return rez;
+        } else {
+                if (extra.length()>100) {
+                request.setAttribute("msg", "В поле \"extra\" не должно быть больше 100 символов");
+                return rez; 
+                }
+        }
+ 
+        return rez = true;
+    }
 
 }

@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Владимир
  */
-@WebServlet(name = "MainPage", urlPatterns = {"/*"})
-public class MainPage extends HttpServlet {
+@WebServlet(name = "test", urlPatterns = {"/test"})
+public class Test extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,33 +37,14 @@ public class MainPage extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet MainPage</title>");            
+            out.println("<title>Servlet Test</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<div>");
-            out.println("<h1>Welcome to Network Clients Data Storage System</h1>");
-            out.println("<h3>Create by BagrovVV</h3>");
-            out.println("<form action=\"create\" method=\"GET\">");
-            out.println("<p><input type=\"submit\" name=\"create\" value=\"Go to Create new record\" /></p>");
-            out.println("</form>");
-            out.println("<form action=\"update\" method=\"GET\">");
-            out.println("<p><input type=\"submit\" name=\"update\" value=\"Go to Update record\" /></p>");
-            out.println("</form>");
-            out.println("<form action=\"delete\" method=\"GET\">");
-            out.println("<p><input type=\"submit\" name=\"delete\" value=\"Go to Delete record\" /></p>");
-            out.println("</form>");
-            out.println("<form  action=\"viewlist\" method=\"GET\">");
-            out.println("<p><input type=\"submit\" name=\"viewlist\" value=\"Go to View the List of all records\" /></p>");
-            out.println("<form  action=\"test\" method=\"GET\">");
-            out.println("<p><input type=\"submit\" name=\"test\" value=\"Test\" /></p>");
-            out.println("</form>");
-            out.println("</div>");
+            out.println("<h1>Servlet Test at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-       System.out.println("Test"); 
     }
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
