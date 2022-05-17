@@ -40,7 +40,7 @@ public class Error extends HttpServlet {
             out.println("<title>Servlet Error</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Error at " + request.getAttribute("msg") + "</h1>");
+            out.println("<h1>Error: " + request.getAttribute("msg") + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

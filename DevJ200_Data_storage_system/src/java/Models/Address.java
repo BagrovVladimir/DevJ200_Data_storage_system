@@ -1,6 +1,9 @@
 
 package Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Address {
     private int idAddress;
     private String city;
@@ -9,6 +12,12 @@ public class Address {
     private int subnum;
     private int flat;
     private String extra;
+    
+    public static List <Address> listAddress;
+    
+    static{
+        listAddress = new ArrayList<>();
+    }
 
     public Address(int idAddress, String city, String street, int num, int subnum, int flat, String extra) {
         this.idAddress = idAddress;
@@ -78,8 +87,5 @@ public class Address {
     public void setExtra(String extra) {
         this.extra = extra;
     }
-    
-    
-    
     
 }

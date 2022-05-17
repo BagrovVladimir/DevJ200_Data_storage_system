@@ -5,8 +5,12 @@
  */
 package ServletPackage;
 
+import Models.Address;
+import Models.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 public class Create extends HttpServlet {
     
     HttpServletRequest request;
+    List <Address> adresses;
+    List <Client> clients;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -90,8 +96,6 @@ public class Create extends HttpServlet {
             out.println("<h4>idClient: </h4>");
             out.println("<input type=\"text\" name=\"idClient\" />");
             out.println("<h4>type: </h4>");
-            out.println("<input type=\"text\" name=\"city\" />");
-            out.println("<h4>street: </h4>");
             out.println("<input type=\"text\" name=\"type\" />");
             out.println("<h4>model: </h4>");
             out.println("<input type=\"text\" name=\"model\" />");
@@ -117,6 +121,7 @@ public class Create extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.request = request;
+        request.setCharacterEncoding("UTF-8");
         
         int idAddress = toInt(request.getParameter("idAddress"));
         String city = request.getParameter("city");
@@ -126,7 +131,32 @@ public class Create extends HttpServlet {
         int flat = toInt(request.getParameter("flat"));
         String extra = request.getParameter("extra");
         
-        checkParametersAddress(city, street, num, extra);
+        int idClient = toInt(request.getParameter("idClient"));
+        String type = request.getParameter("type");
+        String model = request.getParameter("model");
+        String ip = request.getParameter("ip");
+        
+        boolean paramAddress = checkParametersAddress(idAddress, city, street, num, extra);
+        boolean paramClient = checkParametersClient(idClient, type, model, ip);
+        
+        if(!paramAddress || !paramClient){
+           RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error");
+           dispatcher.forward(request, response);
+        } else{
+            Address address = new Address(idAddress, city, street, num, subnum, flat, extra);
+            adresses = Address.listAddress;
+            adresses.add(address);
+            
+            Client client = new Client(idClient, type, model, ip);
+            clients = Client.listClient;
+            clients.add(client);
+            
+            for (Address a : adresses) {
+                System.out.println(" " + a.getIdAddress() + " " + a.getCity());
+            }
+
+            response.sendRedirect("http://localhost:8080/datasystem/viewlist");
+        }
         
     }
 
@@ -150,56 +180,108 @@ public class Create extends HttpServlet {
         }
     }
     
-    public boolean checkParametersAddress(String city, String street, int num, String extra){
+    public boolean checkParametersAddress(int idAdress, String city, String street, int num, String extra){
         boolean rez = false;
-        String regex = "А-Яа-я0-9 -";
+        String regex = "[А-Яа-я0-9 -]*";
+        
+        if (idAdress == 0 || idAdress <=0) {
+            request.setAttribute("msg", "Поле \"idAdress\" не должно равняться нулю/быть меньше нуля");
+            return rez;
+        }
         
         if (city.trim().isEmpty()) {
             request.setAttribute("msg", "Поле \"city\" должно быть заполнено");
             return rez;
-        } else{
-                if (!city.replaceAll("[" + regex + "]", "").isEmpty()) {
+        }
+        if (!city.matches(regex)) {
                     request.setAttribute("msg", "В поле \"city\" должны быть символы только русского алфавита");
                     return rez;
-                } else {
-                   if (city.length()>100) {
+        }
+        if (city.length()>100) {
                     request.setAttribute("msg", "В поле \"city\" не должно быть больше 100 символов");
                     return rez; 
-                }
-            }
         }
-        
+         
         if (street.trim().isEmpty()) {
            request.setAttribute("msg", "Поле \"street\" должно быть заполнено");
            return rez;
-        } else{
-                if (!street.replaceAll("[" + regex + "]", "").isEmpty()) {
-                    request.setAttribute("msg", "В поле \"street\" должны быть символы только русского алфавита");
-                    return rez;
-                } else {
-                   if (street.length()>100) {
-                    request.setAttribute("msg", "В поле \"street\" не должно быть больше 100 символов");
-                    return rez; 
-                }
-            }
+        } 
+        if (!street.matches(regex)) {
+           request.setAttribute("msg", "В поле \"street\" должны быть символы только русского алфавита");
+           return rez;
         }
-
-        if (num == 0) {
-            request.setAttribute("msg", "Поле \"num\" не должно равняться нулю");
+        if (street.length()>100) {
+           request.setAttribute("msg", "В поле \"street\" не должно быть больше 100 символов");
+           return rez; 
+        }
+ 
+        if (num == 0 || num <=0 ) {
+            request.setAttribute("msg", "Поле \"num\" не должно равняться нулю/быть меньше нуля");
             return rez;
         }
         
-        if (!extra.replaceAll("[" + regex + "]", "").isEmpty()) {
-            request.setAttribute("msg", "В поле \"extra\" должны быть символы только русского алфавита");
-            return rez;
-        } else {
-                if (extra.length()>100) {
-                request.setAttribute("msg", "В поле \"extra\" не должно быть больше 100 символов");
-                return rez; 
-                }
+        if (!extra.matches(regex)) {
+           request.setAttribute("msg", "В поле \"extra\" должны быть символы только русского алфавита");
+           return rez;
         }
- 
+        if (extra.length()>200) {
+           request.setAttribute("msg", "В поле \"extra\" не должно быть больше 200 символов");
+           return rez;
+        }
+        
         return rez = true;
+    }
+    
+    public boolean checkParametersClient(int idClient, String type, String model, String ip){
+    boolean rez = false;
+    String regex = "[A-Za-z0-9 -/.]*";
+    
+    if (idClient == 0 || idClient <=0) {
+            request.setAttribute("msg", "Поле \"idClient\" не должно равняться нулю/быть меньше нуля");
+            return rez;
+    }
+    
+    if (type.trim().isEmpty()) {
+            request.setAttribute("msg", "Поле \"type\" должно быть заполнено");
+            return rez;
+    }
+    if (!type.matches(regex)) {
+             request.setAttribute("msg", "В поле \"type\" должны быть символы только латинского алфавита");
+             return rez;
+    }
+    if (type.length()>100) {
+             request.setAttribute("msg", "В поле \"type\" не должно быть больше 100 символов");
+             return rez; 
+    }
+    
+    if (model.trim().isEmpty()) {
+            request.setAttribute("msg", "Поле \"model\" должно быть заполнено");
+            return rez;
+    }
+    if (!model.matches(regex)) {
+             request.setAttribute("msg", "В поле \"model\" должны быть символы только латинского алфавита");
+             return rez;
+    }
+    if (model.length()>100) {
+             request.setAttribute("msg", "В поле \"model\" не должно быть больше 100 символов");
+             return rez; 
+    }
+    
+    if (ip.trim().isEmpty()) {
+            request.setAttribute("msg", "Поле \"ip\" должно быть заполнено");
+            return rez;
+    }
+    String regexIp = "^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$";
+    if (!ip.matches(regexIp)) {
+             request.setAttribute("msg", "Некорректно введён IP");
+             return rez;
+    }
+    if (ip.length()>25) {
+             request.setAttribute("msg", "В поле \"ip\" не должно быть больше 25 символов");
+             return rez; 
+    }
+    
+    return rez = true;
     }
 
 }

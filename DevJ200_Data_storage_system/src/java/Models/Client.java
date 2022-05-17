@@ -1,6 +1,7 @@
 
 package Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
@@ -10,7 +11,13 @@ public class Client {
     private String model;
     private String ip;
     
-    public List<Address> listAddress;
+    public List<Address> listAddressC;
+    
+    public static List <Client> listClient;
+    
+    static{
+        listClient = new ArrayList<>();
+    }
 
     public Client(int idClient, String type, String model, String ip) {
         this.idClient = idClient;

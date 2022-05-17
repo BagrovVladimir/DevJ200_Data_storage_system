@@ -12,44 +12,34 @@ and open the template in the editor.
     </head>
     <body>
         <div>
-            <h1>Create new record</h1>
+            <h1>List of all records</h1>
             <form action="Viewlist" method="GET">
-                <h2>Address: </h2>
-                <h4>idAddress: </h4>
-                <input type="text" name="idAddress" />
-                <h4>city: </h4>
-                <input type="text" name="city" />
-                <h4>street: </h4>
-                <input type="text" name="street" />
-                <h4>num: </h4>
-                <input type="text" name="num" />
-                <h4>subnum: </h4>
-                <input type="text" name="subnum" />
-                <h4>flat: </h4>
-                <input type="text" name="flat" />
-                <h4>extra: </h4>
-                <input type="text" name="extra" />
-                <h2>Client: </h2>
-                <h4>idClient: </h4>
-                <input type="text" name="idClient" />
-                <h4>type: </h4>
-                <input type="text" name="city" />
-                <h4>street: </h4>
-                <input type="text" name="type" />
-                <h4>model: </h4>
-                <input type="text" name="model" />
-                <h4>ip: </h4>
-                <input type="text" name="ip" />
-                <p><input type="submit" name="create" value="Create" /></p> 
-            </form>
-            <form action="update" method="GET">
-                <p><input type="submit" name="update" value="Go to Update the Client" /></p> 
-            </form>
-            <form action="delete" method="GET">
-                <p><input type="submit" name="delete" value="Go to Delete the Client" /></p> 
-            </form>
-            <form  action="viewList" method="GET">
-                <p><input type="submit" name="viewList" value="Go to View the List of Clients" /></p> 
+                <table border = "1">
+                    <tr>
+                        <th>idAddress=idClient</th>
+                        <th>Город</th>
+                        <th>Улица</th>
+                        <th>Номер дома</th>
+                        <th>Корпус</th>
+                        <th>Номер квартиры</th>
+                        <th>Дополнительно</th>
+                        <th>Тип устройства</th>
+                        <th>Модель устройства</th>
+                        <th>Сетевой адрес устройства</th>
+                    </tr>
+                    <tr>
+                        <td>idAddress=idClient</td>
+                        <td>Город</td>
+                        <td>Улица</td>
+                        <td>Номер дома</td>
+                        <td>Корпус</td>
+                        <td>Номер квартиры</td>
+                        <td>Дополнительно</td>
+                        <td>Тип устройства</td>
+                        <td>Модель устройства</td>
+                        <td>Сетевой адрес устройства</td>
+                    </tr>
+                </table>
             </form>
         </div>
     </body>
