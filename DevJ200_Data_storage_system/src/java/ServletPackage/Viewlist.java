@@ -9,7 +9,11 @@ import Models.Address;
 import Models.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Viewlist extends HttpServlet {
     
     HttpServletRequest request;
-    List <Address> adresses;
+    List <Address> addresses;
     List <Client> clients;
 
     /**
@@ -41,11 +45,76 @@ public class Viewlist extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         this.request = request;
-        adresses = Address.listAddress;
+//        adresses = Address.listAddress;
+        addresses = Client.listAddress;
         clients = Client.listClient;
+        
+        filterStreet();
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet Viewlist</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<div>");
+//            out.println("<h1>List of all records</h1>");
+//            out.println("<form action=\"Viewlist\" method=\"GET\">");
+//            out.println("<table border = \"1\">");
+//            out.println("<tr>");
+//            out.println("<th>idAddress</th>");
+//            out.println("<th>Город</th>");
+//            out.println("<th>Улица</th>");
+//            out.println("<th>Номер дома</th>");
+//            out.println("<th>Корпус</th>");
+//            out.println("<th>Номер квартиры</th>");
+//            out.println("<th>Дополнительно</th>");
+//            out.println("</tr>");
+//            if(addresses!=null && !addresses.isEmpty()){
+//                for (Address a : addresses) {
+//                    out.println("<tr>");
+//                    out.println("<td>" + a.getIdAddress() + "</td>");
+//                    out.println("<td>" + a.getCity() + "</td>");
+//                    out.println("<td>" + a.getStreet()  + "</td>");
+//                    out.println("<td>" + a.getNum()  + "</td>");
+//                    out.println("<td>" + a.getSubnum()  + "</td>");
+//                    out.println("<td>" + a.getFlat() + "</td>");
+//                    out.println("<td>" + a.getExtra() + "</td>");
+//                    out.println("</tr>");
+//                }
+//            }
+//            out.println("</table>");
+//            
+//            out.println("<p></p>");
+//            
+//            out.println("<table border = \"1\">");
+//            out.println("<tr>");
+//            out.println("<th>idClient</th>");
+//            out.println("<th>Тип устройства</th>");
+//            out.println("<th>Модель устройства</th>");
+//            out.println("<th>Сетевой адрес устройства</th>");
+//            out.println("</tr>");
+//            if(clients!=null && !clients.isEmpty()){
+//                for (Client c : clients) {   
+//                out.println("<tr>");
+//                out.println("<td>" + c.getIdClient() + "</td>");
+//                out.println("<td>" + c.getType() + "</td>");
+//                out.println("<td>" + c.getModel() + "</td>");
+//                out.println("<td>" + c.getIp() + "</td>");
+//                out.println("</tr>");
+//                }
+//            } 
+//            out.println("</table>");
+//            out.println("</form>");
+//            out.println("</div>");
+//            out.println("</body>");
+//            out.println("</html>");
+            
+
+                    
+              //            out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet Viewlist</title>");            
@@ -54,45 +123,57 @@ public class Viewlist extends HttpServlet {
             out.println("<div>");
             out.println("<h1>List of all records</h1>");
             out.println("<form action=\"Viewlist\" method=\"GET\">");
+            out.println("<h2>Фильтр по улице</h2>");
+//            out.println("<p><input type=\"text\" name=\"streetFilter\"/></p>");
+//            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
+
             out.println("<table border = \"1\">");
             out.println("<tr>");
-            out.println("<th>idAddress=idClient</th>");
+            out.println("<th>idAddress</th>");
             out.println("<th>Город</th>");
             out.println("<th>Улица</th>");
             out.println("<th>Номер дома</th>");
             out.println("<th>Корпус</th>");
             out.println("<th>Номер квартиры</th>");
             out.println("<th>Дополнительно</th>");
+            out.println("<th>idClient</th>");
             out.println("<th>Тип устройства</th>");
             out.println("<th>Модель устройства</th>");
             out.println("<th>Сетевой адрес устройства</th>");
             out.println("</tr>");
-            if(adresses!=null && !adresses.isEmpty()){
-                for (Address a : adresses) {
-                out.println("<tr>");
-                out.println("<td>" + "a.getIdAddress()" + "</td>");
-                out.println("<td>" + "a.getCity()" + "</td>");
-                out.println("<td>" + "a.getStreet()"  + "</td>");
-                out.println("<td>" + "a.getNum()"  + "</td>");
-                out.println("<td>" + "a.getSubnum()"  + "</td>");
-                out.println("<td>" + "a.getFlat()" + "</td>");
-                out.println("<td>" + "a.getExtra()" + "</td>");
-                }
-            }
             if(clients!=null && !clients.isEmpty()){
-                for (Client c : clients) {
-                out.println("<td>" + "c.getType()" + "</td>");
-                out.println("<td>" + "c.getModel()" + "</td>");
-                out.println("<td>" + "c.getIp()" + "</td>");
-                out.println("</tr>");
+                for (Client c : clients) { 
+                    if(addresses!=null && !addresses.isEmpty()){
+                        for (Address a : addresses) {
+                            out.println("<tr>");
+                            out.println("<td>" + a.getIdAddress() + "</td>");
+                            out.println("<td>" + a.getCity() + "</td>");
+                            out.println("<td>" + a.getStreet()  + "</td>");
+                            out.println("<td>" + a.getNum()  + "</td>");
+                            out.println("<td>" + a.getSubnum()  + "</td>");
+                            out.println("<td>" + a.getFlat() + "</td>");
+                            out.println("<td>" + a.getExtra() + "</td>");
+                            out.println("<td>" + c.getIdClient() + "</td>");
+                            out.println("<td>" + c.getType() + "</td>");
+                            out.println("<td>" + c.getModel() + "</td>");
+                            out.println("<td>" + c.getIp() + "</td>");
+                            out.println("</tr>");
+                        }
+                    }
                 }
             } 
             out.println("</table>");
             out.println("</form>");
             out.println("</div>");
             out.println("</body>");
-            out.println("</html>");
+            out.println("</html>");      
         }
+        for (Address a : addresses) {
+                System.out.println("!!!!!!!! " + a.getIdAddress() + " !!!!!!!!" + a.getCity());
+            }
+            for (Client c : clients) {
+                System.out.println("!!!!!!!! " + c.getModel() + " !!!!!!!!" + c.getType());
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -133,5 +214,16 @@ public class Viewlist extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void filterStreet() {
+        String street = Objects.toString(request.getParameter("streetFilter"), "");
+        List<Address> temp = new LinkedList<>();
+        for (Address address : addresses) {
+            if (address.getStreet().contains(street)) temp.add(address);
+        }
+        if(!temp.isEmpty()) addresses = new ArrayList<>();
+    }
+    
+    
 
 }

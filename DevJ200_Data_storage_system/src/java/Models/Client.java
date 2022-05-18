@@ -11,11 +11,12 @@ public class Client {
     private String model;
     private String ip;
     
-    public List<Address> listAddressC;
+    public static List<Address> listAddress;
     
     public static List <Client> listClient;
     
     static{
+        listAddress = new ArrayList<>();
         listClient = new ArrayList<>();
     }
 

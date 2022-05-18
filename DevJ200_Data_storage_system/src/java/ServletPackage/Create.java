@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Create extends HttpServlet {
     
     HttpServletRequest request;
-    List <Address> adresses;
+    List <Address> addresses;
     List <Client> clients;
 
     /**
@@ -144,16 +144,23 @@ public class Create extends HttpServlet {
            dispatcher.forward(request, response);
         } else{
             Address address = new Address(idAddress, city, street, num, subnum, flat, extra);
-            adresses = Address.listAddress;
-            adresses.add(address);
+//            addresses = Address.listAddress;
+//            addresses.add(address);
             
             Client client = new Client(idClient, type, model, ip);
+            
+            addresses = Client.listAddress;
+            addresses.add(address);
             clients = Client.listClient;
             clients.add(client);
             
-            for (Address a : adresses) {
-                System.out.println(" " + a.getIdAddress() + " " + a.getCity());
+            for (Address a : addresses) {
+                System.out.println("!!!!!!!! " + a.getIdAddress() + " !!!!!!!!" + a.getCity());
             }
+            for (Client c : clients) {
+                System.out.println("!!!!!!!! " + c.getModel() + " !!!!!!!!" + c.getType());
+            }
+            
 
             response.sendRedirect("http://localhost:8080/datasystem/viewlist");
         }

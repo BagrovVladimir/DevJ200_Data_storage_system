@@ -13,11 +13,11 @@ public class Address {
     private int flat;
     private String extra;
     
-    public static List <Address> listAddress;
-    
-    static{
-        listAddress = new ArrayList<>();
-    }
+//    public static List <Address> listAddress;
+//    
+//    static{
+//        listAddress = new ArrayList<>();
+//    }
 
     public Address(int idAddress, String city, String street, int num, int subnum, int flat, String extra) {
         this.idAddress = idAddress;
