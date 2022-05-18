@@ -49,7 +49,7 @@ public class Viewlist extends HttpServlet {
         addresses = Client.listAddress;
         clients = Client.listClient;
         
-        filterStreet();
+//        filterStreet();
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -114,7 +114,7 @@ public class Viewlist extends HttpServlet {
             
 
                     
-              //            out.println("<!DOCTYPE html>");
+            out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet Viewlist</title>");            
@@ -123,7 +123,7 @@ public class Viewlist extends HttpServlet {
             out.println("<div>");
             out.println("<h1>List of all records</h1>");
             out.println("<form action=\"Viewlist\" method=\"GET\">");
-            out.println("<h2>Фильтр по улице</h2>");
+//            out.println("<h2>Фильтр по улице</h2>");
 //            out.println("<p><input type=\"text\" name=\"streetFilter\"/></p>");
 //            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
 
