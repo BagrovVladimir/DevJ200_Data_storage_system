@@ -44,7 +44,7 @@ public class Viewlist extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        
         request.setCharacterEncoding("UTF-8");
         this.request = request;
         
@@ -59,76 +59,16 @@ public class Viewlist extends HttpServlet {
          Client client2 = new Client(2, "Smart", "Samsung", "192.168.000.002");
          clients.add(client1);
         clients.add(client2); 
-//        
-//        adresses = Address.listAddress;
+
 //        addresses = Client.listAddress;
 //        clients = Client.listClient;
         
+        filterCity();
         filterStreet();
+        filterNum();
         
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet Viewlist</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<div>");
-//            out.println("<h1>List of all records</h1>");
-//            out.println("<form action=\"Viewlist\" method=\"GET\">");
-//            out.println("<table border = \"1\">");
-//            out.println("<tr>");
-//            out.println("<th>idAddress</th>");
-//            out.println("<th>Город</th>");
-//            out.println("<th>Улица</th>");
-//            out.println("<th>Номер дома</th>");
-//            out.println("<th>Корпус</th>");
-//            out.println("<th>Номер квартиры</th>");
-//            out.println("<th>Дополнительно</th>");
-//            out.println("</tr>");
-//            if(addresses!=null && !addresses.isEmpty()){
-//                for (Address a : addresses) {
-//                    out.println("<tr>");
-//                    out.println("<td>" + a.getIdAddress() + "</td>");
-//                    out.println("<td>" + a.getCity() + "</td>");
-//                    out.println("<td>" + a.getStreet()  + "</td>");
-//                    out.println("<td>" + a.getNum()  + "</td>");
-//                    out.println("<td>" + a.getSubnum()  + "</td>");
-//                    out.println("<td>" + a.getFlat() + "</td>");
-//                    out.println("<td>" + a.getExtra() + "</td>");
-//                    out.println("</tr>");
-//                }
-//            }
-//            out.println("</table>");
-//            
-//            out.println("<p></p>");
-//            
-//            out.println("<table border = \"1\">");
-//            out.println("<tr>");
-//            out.println("<th>idClient</th>");
-//            out.println("<th>Тип устройства</th>");
-//            out.println("<th>Модель устройства</th>");
-//            out.println("<th>Сетевой адрес устройства</th>");
-//            out.println("</tr>");
-//            if(clients!=null && !clients.isEmpty()){
-//                for (Client c : clients) {   
-//                out.println("<tr>");
-//                out.println("<td>" + c.getIdClient() + "</td>");
-//                out.println("<td>" + c.getType() + "</td>");
-//                out.println("<td>" + c.getModel() + "</td>");
-//                out.println("<td>" + c.getIp() + "</td>");
-//                out.println("</tr>");
-//                }
-//            } 
-//            out.println("</table>");
-//            out.println("</form>");
-//            out.println("</div>");
-//            out.println("</body>");
-//            out.println("</html>");
-            
-
-                    
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {      
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -138,10 +78,23 @@ public class Viewlist extends HttpServlet {
             out.println("<div>");
             out.println("<h1>List of all records</h1>");
             out.println("<form action=\"Viewlist\" method=\"GET\">");
+            out.println("<h2>Фильтр по городу</h2>");
+            out.println("<select name=\"city\">");
+            out.println("<option selected disabled>Выберите город</option>");
+            for (Address address : addresses) {
+            out.println("<option value=\"" + address.getCity() +"\">"+ address.getCity() + "</option>");
+            }
+            out.println("</select>");
+            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
             out.println("<h2>Фильтр по улице</h2>");
             out.println("<p><input type=\"text\" name=\"streetFilter\"/></p>");
             out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
-
+            out.println("<h2>Фильтр по номеру дома</h2>");
+            out.println("<p><input type=\"text\" name=\"numFilter\"/></p>");
+            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
+            out.println("</form>");
+            out.println("</div>");
+            out.println("<div>");
             out.println("<table border = \"1\">");
             out.println("<tr>");
             out.println("<th>idAddress</th>");
@@ -162,7 +115,6 @@ public class Viewlist extends HttpServlet {
                         for (Address a : addresses) {
                             if(c.getIdClient()!=a.getIdAddress()) 
                                 continue;
-                            
                             out.println("<tr>");
                             out.println("<td>" + a.getIdAddress() + "</td>");
                             out.println("<td>" + a.getCity() + "</td>");
@@ -181,7 +133,6 @@ public class Viewlist extends HttpServlet {
                 }
             } 
             out.println("</table>");
-            out.println("</form>");
             out.println("</div>");
             out.println("</body>");
             out.println("</html>");      
@@ -208,7 +159,7 @@ public class Viewlist extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
+        
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -220,7 +171,10 @@ public class Viewlist extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+           System.out.println("!!!!!!!!!!!doPOST!!!!!!!!!!!!!!");
+        
         processRequest(request, response);
+//     response.sendRedirect("http://localhost:8080/datasystem/viewlist");
     }
 
     /**
@@ -233,20 +187,51 @@ public class Viewlist extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private List<Address> filterStreet() {
+//    List<Address>
+    
+    private void filterStreet() {
         String street = Objects.toString(request.getParameter("streetFilter"), "");
         List<Address> temp = new LinkedList<>();
         for (Address address : addresses) {
             if (address.getStreet().contains(street)) 
                 temp.add(address);
         }
-//        if(!temp.isEmpty()) 
-//            addresses = new ArrayList<>();
+        if(!temp.isEmpty()) 
+            addresses = new ArrayList<>(temp);
         
-        return temp;
+//        return temp;
     }
     
+    private void filterNum(){
+        String numString = Objects.toString(request.getParameter("numFilter"), "");
+        int num = toInt(numString);
+        List<Address> temp = new LinkedList<>();
+        for (Address address : addresses) {
+            if (address.getNum()==num) 
+                temp.add(address);
+        }
+        if(!temp.isEmpty()) 
+            addresses = new ArrayList<>(temp);
+    }
     
+    private void filterCity(){
+        String city = Objects.toString(request.getParameter("cityFilter"), "");
+        List<Address> temp = new LinkedList<>();
+        for (Address address : addresses) {
+            if (address.getCity().contains(city)) 
+                temp.add(address);
+        }
+        if(!temp.isEmpty()) 
+            addresses = new ArrayList<>(temp);
+    }
     
-
+    public int toInt(String s){
+        try{
+            int i = Integer.parseInt(s);
+            return i;
+        } catch (NumberFormatException nfe) { 
+            System.out.println("NumberFormatException" + nfe.getMessage());
+            return 0;
+        }
+    }
 }
