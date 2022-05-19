@@ -7,6 +7,8 @@ package ServletPackage;
 
 import Models.Address;
 import Models.Client;
+import static Models.Client.listAddress;
+import static Models.Client.listClient;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
@@ -45,11 +47,24 @@ public class Viewlist extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         this.request = request;
-//        adresses = Address.listAddress;
-        addresses = Client.listAddress;
-        clients = Client.listClient;
         
-//        filterStreet();
+        Address address1 = new Address(1, "Питер", "Первая", 1, 1, 1, "Тест1");
+        Address address2 = new Address(2, "Москва", "Вторая", 2, 2, 2, "Тест2");
+        addresses = new ArrayList<>();
+        clients = new ArrayList<>();
+        addresses.add(address1);
+        addresses.add(address2);
+        
+        Client client1 = new Client(1, "Note", "Lenovo", "192.168.000.001");
+         Client client2 = new Client(2, "Smart", "Samsung", "192.168.000.002");
+         clients.add(client1);
+        clients.add(client2); 
+//        
+//        adresses = Address.listAddress;
+//        addresses = Client.listAddress;
+//        clients = Client.listClient;
+        
+        filterStreet();
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -123,9 +138,9 @@ public class Viewlist extends HttpServlet {
             out.println("<div>");
             out.println("<h1>List of all records</h1>");
             out.println("<form action=\"Viewlist\" method=\"GET\">");
-//            out.println("<h2>Фильтр по улице</h2>");
-//            out.println("<p><input type=\"text\" name=\"streetFilter\"/></p>");
-//            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
+            out.println("<h2>Фильтр по улице</h2>");
+            out.println("<p><input type=\"text\" name=\"streetFilter\"/></p>");
+            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
 
             out.println("<table border = \"1\">");
             out.println("<tr>");
@@ -145,6 +160,9 @@ public class Viewlist extends HttpServlet {
                 for (Client c : clients) { 
                     if(addresses!=null && !addresses.isEmpty()){
                         for (Address a : addresses) {
+                            if(c.getIdClient()!=a.getIdAddress()) 
+                                continue;
+                            
                             out.println("<tr>");
                             out.println("<td>" + a.getIdAddress() + "</td>");
                             out.println("<td>" + a.getCity() + "</td>");
@@ -215,14 +233,19 @@ public class Viewlist extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void filterStreet() {
+    private List<Address> filterStreet() {
         String street = Objects.toString(request.getParameter("streetFilter"), "");
         List<Address> temp = new LinkedList<>();
         for (Address address : addresses) {
-            if (address.getStreet().contains(street)) temp.add(address);
+            if (address.getStreet().contains(street)) 
+                temp.add(address);
         }
-        if(!temp.isEmpty()) addresses = new ArrayList<>();
+//        if(!temp.isEmpty()) 
+//            addresses = new ArrayList<>();
+        
+        return temp;
     }
+    
     
     
 
