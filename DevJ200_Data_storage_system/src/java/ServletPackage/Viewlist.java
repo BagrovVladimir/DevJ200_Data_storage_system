@@ -66,7 +66,7 @@ public class Viewlist extends HttpServlet {
         filterCity();
         filterStreet();
         filterNum();
-        
+//        filt();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {      
             out.println("<!DOCTYPE html>");
@@ -79,19 +79,20 @@ public class Viewlist extends HttpServlet {
             out.println("<h1>List of all records</h1>");
             out.println("<form action=\"viewlist\" method=\"GET\">");
             out.println("<h2>Фильтр по городу</h2>");
-            out.println("<select name=\"city\">");
+            out.println("<select name=\"cityFilter\">");
             out.println("<option selected disabled>Выберите город</option>");
             for (Address address : addresses) {
             out.println("<option value=\"" + address.getCity() +"\">"+ address.getCity() + "</option>");
             }
             out.println("</select>");
-            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
+
             out.println("<h2>Фильтр по улице</h2>");
             out.println("<p><input type=\"text\" name=\"streetFilter\"/></p>");
 //            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
             out.println("<h2>Фильтр по номеру дома</h2>");
             out.println("<p><input type=\"text\" name=\"numFilter\"/></p>");
 //            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
+            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
             out.println("</form>");
             out.println("</div>");
             out.println("<div>");
@@ -215,7 +216,7 @@ public class Viewlist extends HttpServlet {
     }
     
     private void filterCity(){
-        String city = Objects.toString(request.getParameter("city"), "");
+        String city = Objects.toString(request.getParameter("cityFilter"), "");
         List<Address> temp = new LinkedList<>();
         for (Address address : addresses) {
             if (address.getCity().contains(city)) 
@@ -235,4 +236,19 @@ public class Viewlist extends HttpServlet {
         }
     }
     
+//        private void filt(){
+//       
+//        String numString = Objects.toString(request.getParameter("numFilter"), "");
+//        int num = toInt(numString);    
+//        String city = Objects.toString(request.getParameter("city"), "");
+//        String street = Objects.toString(request.getParameter("streetFilter"), "");
+//        List<Address> temp = new LinkedList<>();
+//        for (Address address : addresses) {
+//            
+//            if (!address.getCity().contains(city)||address.getNum()!=num||!address.getStreet().contains(street)) 
+//                temp.add(address);
+//        }
+//        if(!temp.isEmpty()) 
+//            addresses = new ArrayList<>(temp);
+//    }
 }

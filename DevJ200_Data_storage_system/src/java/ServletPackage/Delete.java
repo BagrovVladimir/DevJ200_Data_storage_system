@@ -100,21 +100,32 @@ public class Delete extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         int id = toInt(request.getParameter("id"));
         
-        addresses = new ArrayList<>();
-        clients = new ArrayList<>();
+        Viewlist viewlist = new Viewlist();
+        
+        addresses = viewlist.addresses;
+        clients = viewlist.clients;
+        
+//        addresses = new ArrayList<>();
+//        clients = new ArrayList<>();
         
         Address temp = null;
-        
         for (Address address : addresses) {
             if(address.getIdAddress()==id)
                 temp = address;
             
         }
-        
        addresses.remove(temp);
+       
+       Client temp2 = null;
+        for (Client client : clients) {
+            if(client.getIdClient()==id)
+                temp2 = client;
+            
+        }
+       clients.remove(temp2);
 //        
 //        for (int i = 0; i < addresses.size(); i++) {
 //            if(addresses.get(i).getIdAddress()==id)
