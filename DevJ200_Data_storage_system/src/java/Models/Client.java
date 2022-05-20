@@ -11,12 +11,12 @@ public class Client {
     private String model;
     private String ip;
     
-    public static List<Address> listAddress;
-    
+    public static List<Address> listAddress;// убери static
+   
     public static List <Client> listClient;
     
     static{
-        listAddress = new ArrayList<>();
+      listAddress = new ArrayList<>();
         listClient = new ArrayList<>();
     }
 
@@ -25,6 +25,7 @@ public class Client {
         this.type = type;
         this.model = model;
         this.ip = ip;
+//        listAddress = new ArrayList<>();
     }
 
     public int getIdClient() {

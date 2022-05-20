@@ -106,14 +106,24 @@ public class Delete extends HttpServlet {
         addresses = new ArrayList<>();
         clients = new ArrayList<>();
         
-        for (int i = 0; i < addresses.size(); i++) {
-            if(addresses.get(i).getIdAddress()==id)
-                addresses.remove(i);
+        Address temp = null;
+        
+        for (Address address : addresses) {
+            if(address.getIdAddress()==id)
+                temp = address;
+            
         }
-        for (int i = 0; i < clients.size(); i++) {
-            if(clients.get(i).getIdClient()==id)
-                clients.remove(i);
-        }
+        
+       addresses.remove(temp);
+//        
+//        for (int i = 0; i < addresses.size(); i++) {
+//            if(addresses.get(i).getIdAddress()==id)
+//                addresses.remove(i);
+//        }
+//        for (int i = 0; i < clients.size(); i++) {
+//            if(clients.get(i).getIdClient()==id)
+//                clients.remove(i);
+//        }
         
         response.sendRedirect("http://localhost:8080/datasystem/viewlist");
     }

@@ -77,7 +77,7 @@ public class Viewlist extends HttpServlet {
             out.println("<body>");
             out.println("<div>");
             out.println("<h1>List of all records</h1>");
-            out.println("<form action=\"Viewlist\" method=\"GET\">");
+            out.println("<form action=\"viewlist\" method=\"GET\">");
             out.println("<h2>Фильтр по городу</h2>");
             out.println("<select name=\"city\">");
             out.println("<option selected disabled>Выберите город</option>");
@@ -88,10 +88,10 @@ public class Viewlist extends HttpServlet {
             out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
             out.println("<h2>Фильтр по улице</h2>");
             out.println("<p><input type=\"text\" name=\"streetFilter\"/></p>");
-            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
+//            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
             out.println("<h2>Фильтр по номеру дома</h2>");
             out.println("<p><input type=\"text\" name=\"numFilter\"/></p>");
-            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
+//            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
             out.println("</form>");
             out.println("</div>");
             out.println("<div>");
@@ -215,7 +215,7 @@ public class Viewlist extends HttpServlet {
     }
     
     private void filterCity(){
-        String city = Objects.toString(request.getParameter("cityFilter"), "");
+        String city = Objects.toString(request.getParameter("city"), "");
         List<Address> temp = new LinkedList<>();
         for (Address address : addresses) {
             if (address.getCity().contains(city)) 
@@ -234,4 +234,5 @@ public class Viewlist extends HttpServlet {
             return 0;
         }
     }
+    
 }
