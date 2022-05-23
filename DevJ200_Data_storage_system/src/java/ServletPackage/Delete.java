@@ -103,13 +103,16 @@ public class Delete extends HttpServlet {
         throws ServletException, IOException {
         int id = toInt(request.getParameter("id"));
         
-        Viewlist viewlist = new Viewlist();
+//        Viewlist viewlist = new Viewlist();
+//        
+//        addresses = viewlist.addresses;
+//        clients = viewlist.clients;
         
-        addresses = viewlist.addresses;
-        clients = viewlist.clients;
+        addresses = new ArrayList<>();
+        clients = new ArrayList<>();
         
-//        addresses = new ArrayList<>();
-//        clients = new ArrayList<>();
+        addresses = Client.listAddress;
+        clients = Client.listClient;
         
         Address temp = null;
         for (Address address : addresses) {
@@ -126,15 +129,10 @@ public class Delete extends HttpServlet {
             
         }
        clients.remove(temp2);
-//        
-//        for (int i = 0; i < addresses.size(); i++) {
-//            if(addresses.get(i).getIdAddress()==id)
-//                addresses.remove(i);
-//        }
-//        for (int i = 0; i < clients.size(); i++) {
-//            if(clients.get(i).getIdClient()==id)
-//                clients.remove(i);
-//        }
+       
+       Client.listAddress = addresses;
+       Client.listClient = clients;
+
         
         response.sendRedirect("http://localhost:8080/datasystem/viewlist");
     }

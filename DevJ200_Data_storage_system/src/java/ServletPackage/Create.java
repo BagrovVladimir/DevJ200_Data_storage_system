@@ -7,6 +7,7 @@ package ServletPackage;
 
 import Models.Address;
 import Models.Client;
+import Models.Storage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -120,6 +121,7 @@ public class Create extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         this.request = request;
         request.setCharacterEncoding("UTF-8");
         
@@ -148,11 +150,14 @@ public class Create extends HttpServlet {
 //            addresses.add(address);
             
             Client client = new Client(idClient, type, model, ip);
-            
+//            Storage.addresses.add(address);
+//            Storage.clients.add(client);
             addresses = Client.listAddress;
             addresses.add(address);
+            Client.listAddress.add(address);//разберись
             clients = Client.listClient;
             clients.add(client);
+            Client.listClient.add(client);//разберись
             
             for (Address a : addresses) {
                 System.out.println("!!!!!!!! " + a.getIdAddress() + " !!!!!!!!" + a.getCity());

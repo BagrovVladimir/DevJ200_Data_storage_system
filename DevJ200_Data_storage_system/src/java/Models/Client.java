@@ -17,7 +17,7 @@ public class Client {
     
     static{
       listAddress = new ArrayList<>();
-        listClient = new ArrayList<>();
+      listClient = new ArrayList<>();
     }
 
     public Client(int idClient, String type, String model, String ip) {

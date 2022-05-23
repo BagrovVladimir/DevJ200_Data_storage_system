@@ -59,6 +59,12 @@ public class Viewlist extends HttpServlet {
          Client client2 = new Client(2, "Smart", "Samsung", "192.168.000.002");
          clients.add(client1);
         clients.add(client2); 
+        
+        Client.listAddress = addresses;
+        Client.listClient = clients;
+        
+        addresses = Client.listAddress;
+        clients = Client.listClient;
 
 //        addresses = Client.listAddress;
 //        clients = Client.listClient;
@@ -67,6 +73,7 @@ public class Viewlist extends HttpServlet {
         filterStreet();
         filterNum();
 //        filt();
+//        delete();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {      
             out.println("<!DOCTYPE html>");
@@ -85,14 +92,14 @@ public class Viewlist extends HttpServlet {
             out.println("<option value=\"" + address.getCity() +"\">"+ address.getCity() + "</option>");
             }
             out.println("</select>");
-
             out.println("<h2>Фильтр по улице</h2>");
             out.println("<p><input type=\"text\" name=\"streetFilter\"/></p>");
-//            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
             out.println("<h2>Фильтр по номеру дома</h2>");
             out.println("<p><input type=\"text\" name=\"numFilter\"/></p>");
-//            out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
             out.println("<p><input type=\"submit\" value=\"Фильтровать\"/></p>");
+            out.println("<h2>Удалить по Id</h2>");
+            out.println("<p><input type=\"text\" name=\"idDelete\"/></p>");
+            out.println("<p><input type=\"submit\" value=\"Удалить\"/></p>");
             out.println("</form>");
             out.println("</div>");
             out.println("<div>");
@@ -251,4 +258,28 @@ public class Viewlist extends HttpServlet {
 //        if(!temp.isEmpty()) 
 //            addresses = new ArrayList<>(temp);
 //    }
+
+    private void delete() {
+        int id = toInt(request.getParameter("idDelete"));
+        addresses = new ArrayList<>();
+        clients = new ArrayList<>();
+        
+        Address temp = null;
+        for (Address address : addresses) {
+            if(address.getIdAddress()==id)
+                temp = address;
+            
+        }
+       addresses.remove(temp);
+       
+       Client temp2 = null;
+        for (Client client : clients) {
+            if(client.getIdClient()==id)
+                temp2 = client;
+            
+        }
+       clients.remove(temp2);
+    }
+    
+    
 }
