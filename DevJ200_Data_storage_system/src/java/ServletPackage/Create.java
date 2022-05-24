@@ -154,10 +154,10 @@ public class Create extends HttpServlet {
 //            Storage.clients.add(client);
             addresses = Client.listAddress;
             addresses.add(address);
-            Client.listAddress.add(address);//разберись
+//            Client.listAddress.add(address);//разберись
             clients = Client.listClient;
             clients.add(client);
-            Client.listClient.add(client);//разберись
+// 
             
             for (Address a : addresses) {
                 System.out.println("!!!!!!!! " + a.getIdAddress() + " !!!!!!!!" + a.getCity());
