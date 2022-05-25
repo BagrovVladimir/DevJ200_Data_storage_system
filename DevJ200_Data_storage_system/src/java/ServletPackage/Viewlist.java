@@ -5,6 +5,7 @@
  */
 package ServletPackage;
 
+import BeanPackage.SelectBeanLocal;
 import Models.Address;
 import Models.Client;
 import static Models.Client.listAddress;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +31,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Viewlist", urlPatterns = {"/viewlist"})
 public class Viewlist extends HttpServlet {
     
-    HttpServletRequest request;
+    @EJB
+            SelectBeanLocal selectBeanLocal;
+    
+//    HttpServletRequest request;
     List <Address> addresses;
     List <Client> clients;
 
@@ -46,34 +51,39 @@ public class Viewlist extends HttpServlet {
             throws ServletException, IOException {
         
         request.setCharacterEncoding("UTF-8");
-        this.request = request;
+        addresses = selectBeanLocal.addressList();
+        clients = selectBeanLocal.clientList();
+//        this.request = request;
         
-//        Address address1 = new Address(1, "Питер", "Первая", 1, 1, 1, "Тест1");
-//        Address address2 = new Address(2, "Москва", "Вторая", 2, 2, 2, "Тест2");
-//        addresses = new ArrayList<>();
-//        clients = new ArrayList<>();
-//        addresses.add(address1);
-//        addresses.add(address2);
+////        Address address1 = new Address(1, "Питер", "Первая", 1, 1, 1, "Тест1");
+////        Address address2 = new Address(2, "Москва", "Вторая", 2, 2, 2, "Тест2");
+////        addresses = new ArrayList<>();
+////        clients = new ArrayList<>();
+////        addresses.add(address1);
+////        addresses.add(address2);
+////        
+////        Client client1 = new Client(1, "Note", "Lenovo", "192.168.000.001");
+////         Client client2 = new Client(2, "Smart", "Samsung", "192.168.000.002");
+////         clients.add(client1);
+////        clients.add(client2); 
+////        
+////        Client.listAddress = addresses;
+////        Client.listClient = clients;
 //        
-//        Client client1 = new Client(1, "Note", "Lenovo", "192.168.000.001");
-//         Client client2 = new Client(2, "Smart", "Samsung", "192.168.000.002");
-//         clients.add(client1);
-//        clients.add(client2); 
-//        
-//        Client.listAddress = addresses;
-//        Client.listClient = clients;
-        
+////        addresses = Client.listAddress;
+////        clients = Client.listClient;
+
 //        addresses = Client.listAddress;
 //        clients = Client.listClient;
-
-        addresses = Client.listAddress;
-        clients = Client.listClient;
         
-        filterCity();
-        filterStreet();
-        filterNum();
-//        filt();
-//        delete();
+//        filterCity();
+//        filterStreet();
+//        filterNum();
+////        filt();
+////        delete();
+        selectBeanLocal.filterCity(request);
+        selectBeanLocal.filterStreet(request);
+        selectBeanLocal.filterNum(request);
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {      
             out.println("<!DOCTYPE html>");
@@ -197,51 +207,51 @@ public class Viewlist extends HttpServlet {
 
 //    List<Address>
     
-    private void filterStreet() {
-        String street = Objects.toString(request.getParameter("streetFilter"), "");
-        List<Address> temp = new LinkedList<>();
-        for (Address address : addresses) {
-            if (address.getStreet().contains(street)) 
-                temp.add(address);
-        }
-        if(!temp.isEmpty()) 
-            addresses = new ArrayList<>(temp);
-        
-//        return temp;
-    }
+//    private void filterStreet() {
+//        String street = Objects.toString(request.getParameter("streetFilter"), "");
+//        List<Address> temp = new LinkedList<>();
+//        for (Address address : addresses) {
+//            if (address.getStreet().contains(street)) 
+//                temp.add(address);
+//        }
+//        if(!temp.isEmpty()) 
+//            addresses = new ArrayList<>(temp);
+//        
+////        return temp;
+//    }
     
-    private void filterNum(){
-        String numString = Objects.toString(request.getParameter("numFilter"), "");
-        int num = toInt(numString);
-        List<Address> temp = new LinkedList<>();
-        for (Address address : addresses) {
-            if (address.getNum()==num) 
-                temp.add(address);
-        }
-        if(!temp.isEmpty()) 
-            addresses = new ArrayList<>(temp);
-    }
+//    private void filterNum(){
+//        String numString = Objects.toString(request.getParameter("numFilter"), "");
+//        int num = toInt(numString);
+//        List<Address> temp = new LinkedList<>();
+//        for (Address address : addresses) {
+//            if (address.getNum()==num) 
+//                temp.add(address);
+//        }
+//        if(!temp.isEmpty()) 
+//            addresses = new ArrayList<>(temp);
+//    }
     
-    private void filterCity(){
-        String city = Objects.toString(request.getParameter("cityFilter"), "");
-        List<Address> temp = new LinkedList<>();
-        for (Address address : addresses) {
-            if (address.getCity().contains(city)) 
-                temp.add(address);
-        }
-        if(!temp.isEmpty()) 
-            addresses = new ArrayList<>(temp);
-    }
+//    private void filterCity(){
+//        String city = Objects.toString(request.getParameter("cityFilter"), "");
+//        List<Address> temp = new LinkedList<>();
+//        for (Address address : addresses) {
+//            if (address.getCity().contains(city)) 
+//                temp.add(address);
+//        }
+//        if(!temp.isEmpty()) 
+//            addresses = new ArrayList<>(temp);
+//    }
     
-    public int toInt(String s){
-        try{
-            int i = Integer.parseInt(s);
-            return i;
-        } catch (NumberFormatException nfe) { 
-            System.out.println("NumberFormatException" + nfe.getMessage());
-            return 0;
-        }
-    }
+//    public int toInt(String s){
+//        try{
+//            int i = Integer.parseInt(s);
+//            return i;
+//        } catch (NumberFormatException nfe) { 
+//            System.out.println("NumberFormatException" + nfe.getMessage());
+//            return 0;
+//        }
+//    }
     
 //        private void filt(){
 //       
@@ -259,27 +269,25 @@ public class Viewlist extends HttpServlet {
 //            addresses = new ArrayList<>(temp);
 //    }
 
-    private void delete() {
-        int id = toInt(request.getParameter("idDelete"));
-//        addresses = new ArrayList<>();
-//        clients = new ArrayList<>();
-        
-        Address temp = null;
-        for (Address address : addresses) {
-            if(address.getIdAddress()==id)
-                temp = address;
-            
-        }
-       addresses.remove(temp);
-       
-       Client temp2 = null;
-        for (Client client : clients) {
-            if(client.getIdClient()==id)
-                temp2 = client;
-            
-        }
-       clients.remove(temp2);
-    }
-    
-    
+//    private void delete() {
+//        int id = toInt(request.getParameter("idDelete"));
+////        addresses = new ArrayList<>();
+////        clients = new ArrayList<>();
+//        
+//        Address temp = null;
+//        for (Address address : addresses) {
+//            if(address.getIdAddress()==id)
+//                temp = address;
+//            
+//        }
+//       addresses.remove(temp);
+//       
+//       Client temp2 = null;
+//        for (Client client : clients) {
+//            if(client.getIdClient()==id)
+//                temp2 = client;
+//            
+//        }
+//       clients.remove(temp2);
+//    }
 }

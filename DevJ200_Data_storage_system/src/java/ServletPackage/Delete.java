@@ -5,6 +5,7 @@
  */
 package ServletPackage;
 
+import BeanPackage.UpdateBeanLocal;
 import Models.Address;
 import Models.Client;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,9 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Delete", urlPatterns = {"/delete"})
 public class Delete extends HttpServlet {
     
-    HttpServletRequest request;
-    List <Address> addresses;
-    List <Client> clients;
+    @EJB
+            UpdateBeanLocal updateBeanLocal;
+    
+//    HttpServletRequest request;
+//    List <Address> addresses;
+//    List <Client> clients;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -101,35 +106,37 @@ public class Delete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        int id = toInt(request.getParameter("id"));
+        int id = updateBeanLocal.toInt(request.getParameter("id"));
+        updateBeanLocal.removeAddress(id);
+        updateBeanLocal.removeClient(id);
         
-//        Viewlist viewlist = new Viewlist();
+////        Viewlist viewlist = new Viewlist();
+////        
+////        addresses = viewlist.addresses;
+////        clients = viewlist.clients;
 //        
-//        addresses = viewlist.addresses;
-//        clients = viewlist.clients;
+////        addresses = new ArrayList<>();
+////        clients = new ArrayList<>();
         
-//        addresses = new ArrayList<>();
-//        clients = new ArrayList<>();
-        
-        addresses = Client.listAddress;
-        clients = Client.listClient;
-        
-        Address temp = null;
-        for (Address address : addresses) {
-            if(address.getIdAddress()==id)
-                temp = address;
-        }
-       addresses.remove(temp);
+//        addresses = Client.listAddress;
+//        clients = Client.listClient;
+//        
+//        Address temp = null;
+//        for (Address address : addresses) {
+//            if(address.getIdAddress()==id)
+//                temp = address;
+//        }
+//       addresses.remove(temp);
+//       
+//       Client temp2 = null;
+//        for (Client client : clients) {
+//            if(client.getIdClient()==id)
+//                temp2 = client;  
+//        }
+//       clients.remove(temp2);
        
-       Client temp2 = null;
-        for (Client client : clients) {
-            if(client.getIdClient()==id)
-                temp2 = client;  
-        }
-       clients.remove(temp2);
-       
-//       Client.listAddress = addresses;
-//       Client.listClient = clients;
+////       Client.listAddress = addresses;
+////       Client.listClient = clients;
 
         
         response.sendRedirect("http://localhost:8080/datasystem/viewlist");
@@ -145,14 +152,14 @@ public class Delete extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    public int toInt(String s){
-        try{
-            int i = Integer.parseInt(s);
-            return i;
-        } catch (NumberFormatException nfe) { 
-            System.out.println("NumberFormatException" + nfe.getMessage());
-            return 0;
-        }
-    }
+//    public int toInt(String s){
+//        try{
+//            int i = Integer.parseInt(s);
+//            return i;
+//        } catch (NumberFormatException nfe) { 
+//            System.out.println("NumberFormatException" + nfe.getMessage());
+//            return 0;
+//        }
+//    }
 
 }
