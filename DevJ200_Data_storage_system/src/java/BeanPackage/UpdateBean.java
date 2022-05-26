@@ -18,8 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 @Stateless
 public class UpdateBean implements UpdateBeanLocal {
     
+
     List <Address> addresses = Client.listAddress;
     List <Client> clients = Client.listClient;
+
     
 
     @Override

@@ -18,12 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 @Local
 public interface SelectBeanLocal {
     
-    public List <Address> addressList();
-    public List <Client> clientList();
+//    public List <Address> addressList();
+//    public List <Client> clientList();
     
-    public List <Address> filterStreet(HttpServletRequest request);
-    public List <Address> filterNum(HttpServletRequest request);
-    public List <Address> filterCity(HttpServletRequest request);
+    public List <Address> filterStreet(HttpServletRequest request, List <Address> addresses);
+    public List <Address> filterNum(HttpServletRequest request, List <Address> addresses);
+    public List <Address> filterCity(HttpServletRequest request, List <Address> addresses);
     
     public int toInt(String s);
 }

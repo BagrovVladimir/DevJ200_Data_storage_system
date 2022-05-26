@@ -51,8 +51,8 @@ public class Viewlist extends HttpServlet {
             throws ServletException, IOException {
         
         request.setCharacterEncoding("UTF-8");
-        addresses = selectBeanLocal.addressList();
-        clients = selectBeanLocal.clientList();
+//        addresses = selectBeanLocal.addressList();
+//        clients = selectBeanLocal.clientList();
 //        this.request = request;
         
 ////        Address address1 = new Address(1, "Питер", "Первая", 1, 1, 1, "Тест1");
@@ -73,17 +73,20 @@ public class Viewlist extends HttpServlet {
 ////        addresses = Client.listAddress;
 ////        clients = Client.listClient;
 
-//        addresses = Client.listAddress;
-//        clients = Client.listClient;
+        addresses = Client.listAddress;
+        clients = Client.listClient;
         
 //        filterCity();
 //        filterStreet();
 //        filterNum();
 ////        filt();
 ////        delete();
-        selectBeanLocal.filterCity(request);
-        selectBeanLocal.filterStreet(request);
-        selectBeanLocal.filterNum(request);
+        
+        addresses = selectBeanLocal.filterStreet(request, addresses);
+        System.out.println("filterStreet size: " + addresses.size());
+        addresses = selectBeanLocal.filterNum(request, addresses);
+        addresses = selectBeanLocal.filterCity(request, addresses);
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {      
             out.println("<!DOCTYPE html>");

@@ -25,12 +25,17 @@ public class SelectBean implements SelectBeanLocal {
 //    @EJB
 //            UpdateBeanLocal updateBeanLocal;
     
-    List <Address> addresses = Client.listAddress;
-    List <Client> clients = Client.listClient;
+//    List <Address> addresses = Client.listAddress;
+//    List <Client> clients = Client.listClient;
+    
+
 
     @Override
-    public List <Address> filterStreet(HttpServletRequest request) {
+    public List <Address> filterStreet(HttpServletRequest request, List <Address> addresses) {
+        System.out.println("filterStreet!!!!!!!!!!ну иииии!!");
         String street = Objects.toString(request.getParameter("streetFilter"), "");
+//        List <Address> addresses;
+//        addresses = Client.listAddress;
         List<Address> temp = new LinkedList<>();
         for (Address address : addresses) {
             if (address.getStreet().contains(street)) 
@@ -38,13 +43,17 @@ public class SelectBean implements SelectBeanLocal {
         }
         if(!temp.isEmpty()) 
             addresses = new ArrayList<>(temp);
+        System.out.println(addresses + " size: "+addresses.size() + street + temp + "sizetemp: "+ temp.size());
+        
         return addresses;  
     }
 
     @Override
-    public List<Address> filterNum(HttpServletRequest request) {
+    public List<Address> filterNum(HttpServletRequest request, List <Address> addresses) {
         String numString = Objects.toString(request.getParameter("numFilter"), "");
         int num = toInt(numString);
+//        List <Address> addresses;
+//        addresses = Client.listAddress;
         List<Address> temp = new LinkedList<>();
         for (Address address : addresses) {
             if (address.getNum()==num) 
@@ -54,10 +63,12 @@ public class SelectBean implements SelectBeanLocal {
             addresses = new ArrayList<>(temp);
         return addresses;
     }
-
+//
     @Override
-    public List<Address> filterCity(HttpServletRequest request) {
+    public List<Address> filterCity(HttpServletRequest request, List <Address> addresses) {
         String city = Objects.toString(request.getParameter("cityFilter"), "");
+//        List <Address> addresses;
+//        addresses = Client.listAddress;
         List<Address> temp = new LinkedList<>();
         for (Address address : addresses) {
             if (address.getCity().contains(city)) 
@@ -68,15 +79,15 @@ public class SelectBean implements SelectBeanLocal {
         return addresses;
     }   
 
-    @Override
-    public List<Address> addressList() {
-        return addresses;
-    }
-
-    @Override
-    public List<Client> clientList() {
-        return clients;
-    }
+//    @Override
+//    public List<Address> addressList() {
+//        return addresses;
+//    }
+//
+//    @Override
+//    public List<Client> clientList() {
+//        return clients;
+//    }
     
     @Override
     public int toInt(String s) {
