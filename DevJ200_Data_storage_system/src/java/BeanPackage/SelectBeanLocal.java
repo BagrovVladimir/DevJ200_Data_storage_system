@@ -5,8 +5,8 @@
  */
 package BeanPackage;
 
-import Models.Address;
-import Models.Client;
+import Entity.Address;
+import Entity.Client;
 import java.util.List;
 import javax.ejb.Local;
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 @Local
 public interface SelectBeanLocal {
     
-//    public List <Address> addressList();
-//    public List <Client> clientList();
+    public List <Address> addressList();
+    public List <Client> clientList();
     
     public List <Address> filterStreet(HttpServletRequest request, List <Address> addresses);
     public List <Address> filterNum(HttpServletRequest request, List <Address> addresses);

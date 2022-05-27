@@ -9,6 +9,8 @@ import Models.Address;
 import Models.Client;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -18,9 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 @Stateless
 public class UpdateBean implements UpdateBeanLocal {
     
+    @PersistenceContext
+            EntityManager em;
+    
 
-    List <Address> addresses = Client.listAddress;
-    List <Client> clients = Client.listClient;
+//    List <Address> addresses = Client.listAddress;
+//    List <Client> clients = Client.listClient;
 
     
 
@@ -144,174 +149,177 @@ public class UpdateBean implements UpdateBeanLocal {
     @Override
     public List<Address> addressList(int idAddress, String city, String street, int num, int subnum, int flat, String extra) {
         Address address = new Address(idAddress, city, street, num, subnum, flat, extra);
+        em.persist(address);
+       
 //        addresses = Client.listAddress;
-        addresses.add(address);
-        return addresses;
+//        addresses.add(address);
+        return em.createNamedQuery("Address.findAll").getResultList();
     }
 
     @Override
     public List<Client> clientList(int idClient, String type, String model, String ip) {
         Client client = new Client(idClient, type, model, ip);
+        em.persist(client);
 //        clients = Client.listClient;
-        clients.add(client);
-        return clients;
+//        clients.add(client);
+        return em.createNamedQuery("Client.findAll").getResultList();
     }
 
-    @Override
-    public List<Address> removeAddress(int id) {
-        Address temp = null;
-        for (Address address : addresses) {
-            if(address.getIdAddress()==id)
-                temp = address;
-        }
-       addresses.remove(temp);
-       return addresses;
-    }
-
-    @Override
-    public List<Client> removeClient(int id) {
-        Client temp2 = null;
-        for (Client client : clients) {
-            if(client.getIdClient()==id)
-                temp2 = client;  
-        }
-       clients.remove(temp2);
-       return clients;
-    }
-
-    @Override
-    public boolean checkParametersAddressUpdate(int idAddress, String city, String street, int num, String extra, HttpServletRequest request) {
-               boolean rez = false;
-        String regex = "[А-Яа-я0-9 -]*";
-        
-        if (idAddress == 0 || idAddress <=0) {
-            request.setAttribute("msg", "Поле \"idAddress\" не должно равняться нулю/быть меньше нуля");
-            return rez;
-        }
-        
-        if (!city.matches(regex)) {
-                    request.setAttribute("msg", "В поле \"city\" должны быть символы только русского алфавита");
-                    return rez;
-        }
-        if (city.length()>100) {
-                    request.setAttribute("msg", "В поле \"city\" не должно быть больше 100 символов");
-                    return rez; 
-        }
-         
-        if (!street.matches(regex)) {
-           request.setAttribute("msg", "В поле \"street\" должны быть символы только русского алфавита");
-           return rez;
-        }
-        if (street.length()>100) {
-           request.setAttribute("msg", "В поле \"street\" не должно быть больше 100 символов");
-           return rez; 
-        }
-        
-        if (!extra.matches(regex)) {
-           request.setAttribute("msg", "В поле \"extra\" должны быть символы только русского алфавита");
-           return rez;
-        }
-        if (extra.length()>200) {
-           request.setAttribute("msg", "В поле \"extra\" не должно быть больше 200 символов");
-           return rez;
-        }
-        
-        return rez = true; 
-    }
-
-    @Override
-    public boolean checkParametersClientUpdate(int idClient, String type, String model, String ip, HttpServletRequest request) {
-                boolean rez = false;
-        String regex = "[A-Za-z0-9 -/.]*";
-
-        if (idClient == 0 || idClient <=0) {
-                request.setAttribute("msg", "Поле \"idClient\" не должно равняться нулю/быть меньше нуля");
-                return rez;
-        }
-
-        if (!type.matches(regex)) {
-                 request.setAttribute("msg", "В поле \"type\" должны быть символы только латинского алфавита");
-                 return rez;
-        }
-        if (type.length()>100) {
-                 request.setAttribute("msg", "В поле \"type\" не должно быть больше 100 символов");
-                 return rez; 
-        }
-
-        if (!model.matches(regex)) {
-                 request.setAttribute("msg", "В поле \"model\" должны быть символы только латинского алфавита");
-                 return rez;
-        }
-        if (model.length()>100) {
-                 request.setAttribute("msg", "В поле \"model\" не должно быть больше 100 символов");
-                 return rez; 
-        }
-
-        String regexIp = "^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$";
-        if (!ip.matches(regexIp)) {
-                 request.setAttribute("msg", "Некорректно введён IP");
-                 return rez;
-        }
-        if (ip.length()>25) {
-                 request.setAttribute("msg", "В поле \"ip\" не должно быть больше 25 символов");
-                 return rez; 
-        }
-
-        return rez = true;
-    }
-
-    @Override
-    public List<Address> updateAddress(int idAddress, String city, String street, int num, int subnum, int flat, String extra) {
-                Address tempAddress = null;
-        for (Address address : addresses) {
-            if(address.getIdAddress() == idAddress)
-                tempAddress = address;
-            }
-                if(!city.trim().isEmpty()){
-                  tempAddress.setCity(city);  
-                }
-                if(!street.trim().isEmpty()){
-                  tempAddress.setStreet(street); 
-                }
-                if(num!=0){
-                  tempAddress.setNum(num); 
-                }
-                if(subnum!=0){
-                  tempAddress.setSubnum(subnum);
-                }
-                if(flat!=0){
-                  tempAddress.setFlat(flat);
-                }
-                if(!extra.trim().isEmpty()){
-                  tempAddress.setExtra(extra);
-                }
-        Address addressUpdate = tempAddress;
-        addresses.add(addressUpdate);
-        addresses.remove(tempAddress);
-        return addresses;
-    }
-
-    @Override
-    public List<Client> updateClient(int idClient, String type, String model, String ip) {
-                Client tempClient = null;
-        for (Client client : clients) {
-            if(client.getIdClient() == idClient)
-                tempClient = client;
-            }
-                if(!type.trim().isEmpty()){
-                  tempClient.setType(type);  
-                }
-                if(!model.trim().isEmpty()){
-                  tempClient.setModel(model); 
-                }
-                if(!ip.trim().isEmpty()){
-                  tempClient.setIp(ip); 
-                }
-        Client clientUpdate = tempClient;
-        clients.add(clientUpdate);
-        clients.remove(tempClient);
-        return clients;
-    }
+//    @Override
+//    public List<Address> removeAddress(int id) {
+//        Address temp = null;
+//        for (Address address : addresses) {
+//            if(address.getIdAddress()==id)
+//                temp = address;
+//        }
+//       addresses.remove(temp);
+//       return addresses;
+//    }
+//
+//    @Override
+//    public List<Client> removeClient(int id) {
+//        Client temp2 = null;
+//        for (Client client : clients) {
+//            if(client.getIdClient()==id)
+//                temp2 = client;  
+//        }
+//       clients.remove(temp2);
+//       return clients;
+//    }
+//
+//    @Override
+//    public boolean checkParametersAddressUpdate(int idAddress, String city, String street, int num, String extra, HttpServletRequest request) {
+//               boolean rez = false;
+//        String regex = "[А-Яа-я0-9 -]*";
+//        
+//        if (idAddress == 0 || idAddress <=0) {
+//            request.setAttribute("msg", "Поле \"idAddress\" не должно равняться нулю/быть меньше нуля");
+//            return rez;
+//        }
+//        
+//        if (!city.matches(regex)) {
+//                    request.setAttribute("msg", "В поле \"city\" должны быть символы только русского алфавита");
+//                    return rez;
+//        }
+//        if (city.length()>100) {
+//                    request.setAttribute("msg", "В поле \"city\" не должно быть больше 100 символов");
+//                    return rez; 
+//        }
+//         
+//        if (!street.matches(regex)) {
+//           request.setAttribute("msg", "В поле \"street\" должны быть символы только русского алфавита");
+//           return rez;
+//        }
+//        if (street.length()>100) {
+//           request.setAttribute("msg", "В поле \"street\" не должно быть больше 100 символов");
+//           return rez; 
+//        }
+//        
+//        if (!extra.matches(regex)) {
+//           request.setAttribute("msg", "В поле \"extra\" должны быть символы только русского алфавита");
+//           return rez;
+//        }
+//        if (extra.length()>200) {
+//           request.setAttribute("msg", "В поле \"extra\" не должно быть больше 200 символов");
+//           return rez;
+//        }
+//        
+//        return rez = true; 
+//    }
+//
+//    @Override
+//    public boolean checkParametersClientUpdate(int idClient, String type, String model, String ip, HttpServletRequest request) {
+//                boolean rez = false;
+//        String regex = "[A-Za-z0-9 -/.]*";
+//
+//        if (idClient == 0 || idClient <=0) {
+//                request.setAttribute("msg", "Поле \"idClient\" не должно равняться нулю/быть меньше нуля");
+//                return rez;
+//        }
+//
+//        if (!type.matches(regex)) {
+//                 request.setAttribute("msg", "В поле \"type\" должны быть символы только латинского алфавита");
+//                 return rez;
+//        }
+//        if (type.length()>100) {
+//                 request.setAttribute("msg", "В поле \"type\" не должно быть больше 100 символов");
+//                 return rez; 
+//        }
+//
+//        if (!model.matches(regex)) {
+//                 request.setAttribute("msg", "В поле \"model\" должны быть символы только латинского алфавита");
+//                 return rez;
+//        }
+//        if (model.length()>100) {
+//                 request.setAttribute("msg", "В поле \"model\" не должно быть больше 100 символов");
+//                 return rez; 
+//        }
+//
+//        String regexIp = "^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$";
+//        if (!ip.matches(regexIp)) {
+//                 request.setAttribute("msg", "Некорректно введён IP");
+//                 return rez;
+//        }
+//        if (ip.length()>25) {
+//                 request.setAttribute("msg", "В поле \"ip\" не должно быть больше 25 символов");
+//                 return rez; 
+//        }
+//
+//        return rez = true;
+//    }
+//
+//    @Override
+//    public List<Address> updateAddress(int idAddress, String city, String street, int num, int subnum, int flat, String extra) {
+//                Address tempAddress = null;
+//        for (Address address : addresses) {
+//            if(address.getIdAddress() == idAddress)
+//                tempAddress = address;
+//            }
+//                if(!city.trim().isEmpty()){
+//                  tempAddress.setCity(city);  
+//                }
+//                if(!street.trim().isEmpty()){
+//                  tempAddress.setStreet(street); 
+//                }
+//                if(num!=0){
+//                  tempAddress.setNum(num); 
+//                }
+//                if(subnum!=0){
+//                  tempAddress.setSubnum(subnum);
+//                }
+//                if(flat!=0){
+//                  tempAddress.setFlat(flat);
+//                }
+//                if(!extra.trim().isEmpty()){
+//                  tempAddress.setExtra(extra);
+//                }
+//        Address addressUpdate = tempAddress;
+//        addresses.add(addressUpdate);
+//        addresses.remove(tempAddress);
+//        return addresses;
+//    }
+//
+//    @Override
+//    public List<Client> updateClient(int idClient, String type, String model, String ip) {
+//                Client tempClient = null;
+//        for (Client client : clients) {
+//            if(client.getIdClient() == idClient)
+//                tempClient = client;
+//            }
+//                if(!type.trim().isEmpty()){
+//                  tempClient.setType(type);  
+//                }
+//                if(!model.trim().isEmpty()){
+//                  tempClient.setModel(model); 
+//                }
+//                if(!ip.trim().isEmpty()){
+//                  tempClient.setIp(ip); 
+//                }
+//        Client clientUpdate = tempClient;
+//        clients.add(clientUpdate);
+//        clients.remove(tempClient);
+//        return clients;
+//    }
 
  
     

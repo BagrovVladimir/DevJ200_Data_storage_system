@@ -5,14 +5,16 @@
  */
 package BeanPackage;
 
-import Models.Address;
-import Models.Client;
+import Entity.Address;
+import Entity.Client;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -21,6 +23,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Stateless
 public class SelectBean implements SelectBeanLocal {
+    
+    @PersistenceContext
+    EntityManager em;
+    
     
 //    @EJB
 //            UpdateBeanLocal updateBeanLocal;
@@ -98,6 +104,16 @@ public class SelectBean implements SelectBeanLocal {
             System.out.println("NumberFormatException" + nfe.getMessage());
             return 0;
         }
+    }
+
+    @Override
+    public List<Address> addressList() {
+        return em.createNamedQuery("Address.findAll").getResultList();
+    }
+
+    @Override
+    public List<Client> clientList() {
+        return  em.createNamedQuery("lient.findAll").getResultList();
     }
 
 }

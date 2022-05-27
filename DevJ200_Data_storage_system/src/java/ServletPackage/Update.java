@@ -144,15 +144,15 @@ public class Update extends HttpServlet {
         String model = request.getParameter("modelUpdate");
         String ip = request.getParameter("ipUpdate");
         
-        boolean paramAddress = updateBeanLocal.checkParametersAddressUpdate(idAddress, city, street, num, extra, request);
-        boolean paramClient = updateBeanLocal.checkParametersClientUpdate(idClient, type, model, ip, request);
+//        boolean paramAddress = updateBeanLocal.checkParametersAddressUpdate(idAddress, city, street, num, extra, request);
+//        boolean paramClient = updateBeanLocal.checkParametersClientUpdate(idClient, type, model, ip, request);
         
-        if(!paramAddress || !paramClient){
-           RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error");
-           dispatcher.forward(request, response);
-        } else{
-            updateBeanLocal.updateAddress(idAddress, city, street, num, subnum, flat, extra);
-            updateBeanLocal.updateClient(idClient, type, model, ip);
+//        if(!paramAddress || !paramClient){
+//           RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error");
+//           dispatcher.forward(request, response);
+//        } else{!!!!!!!!!!!
+//            updateBeanLocal.updateAddress(idAddress, city, street, num, subnum, flat, extra);//!!!!!!!!!!!
+//            updateBeanLocal.updateClient(idClient, type, model, ip);
 //            addresses = Client.listAddress;
 //            clients = Client.listClient;
             
@@ -202,7 +202,7 @@ public class Update extends HttpServlet {
 //        clients.remove(tempClient);
         
         response.sendRedirect("http://localhost:8080/datasystem/viewlist");
-        }
+//        }!!!!!!!!!!
     }
 
     /**

@@ -6,8 +6,8 @@
 package ServletPackage;
 
 import BeanPackage.UpdateBeanLocal;
-import Models.Address;
-import Models.Client;
+import Entity.Address;
+import Entity.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -106,9 +106,9 @@ public class Delete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        int id = updateBeanLocal.toInt(request.getParameter("id"));
-        updateBeanLocal.removeAddress(id);
-        updateBeanLocal.removeClient(id);
+//        int id = updateBeanLocal.toInt(request.getParameter("id"));
+//        updateBeanLocal.removeAddress(id);
+//        updateBeanLocal.removeClient(id);
         
 ////        Viewlist viewlist = new Viewlist();
 ////        

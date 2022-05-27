@@ -6,10 +6,9 @@
 package ServletPackage;
 
 import BeanPackage.SelectBeanLocal;
-import Models.Address;
-import Models.Client;
-import static Models.Client.listAddress;
-import static Models.Client.listClient;
+import BeanPackage.UpdateBeanLocal;
+import Entity.Address;
+import Entity.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
@@ -33,6 +32,8 @@ public class Viewlist extends HttpServlet {
     
     @EJB
             SelectBeanLocal selectBeanLocal;
+    @EJB
+            UpdateBeanLocal updateBeanLocal;
     
 //    HttpServletRequest request;
     List <Address> addresses;
@@ -73,8 +74,8 @@ public class Viewlist extends HttpServlet {
 ////        addresses = Client.listAddress;
 ////        clients = Client.listClient;
 
-        addresses = Client.listAddress;
-        clients = Client.listClient;
+        addresses = selectBeanLocal.addressList();
+//        clients = Client.listClient;
         
 //        filterCity();
 //        filterStreet();
@@ -130,40 +131,40 @@ public class Viewlist extends HttpServlet {
             out.println("<th>Модель устройства</th>");
             out.println("<th>Сетевой адрес устройства</th>");
             out.println("</tr>");
-            if(clients!=null && !clients.isEmpty()){
-                for (Client c : clients) { 
+//            if(clients!=null && !clients.isEmpty()){
+//                for (Client c : clients) { 
                     if(addresses!=null && !addresses.isEmpty()){
                         for (Address a : addresses) {
-                            if(c.getIdClient()!=a.getIdAddress()) 
-                                continue;
+//                            if(a.getClient().getIdclient()!=a.getIdaddress()) 
+//                                continue;
                             out.println("<tr>");
-                            out.println("<td>" + a.getIdAddress() + "</td>");
+                            out.println("<td>" + a.getIdaddress()+ "</td>");
                             out.println("<td>" + a.getCity() + "</td>");
                             out.println("<td>" + a.getStreet()  + "</td>");
                             out.println("<td>" + a.getNum()  + "</td>");
                             out.println("<td>" + a.getSubnum()  + "</td>");
                             out.println("<td>" + a.getFlat() + "</td>");
                             out.println("<td>" + a.getExtra() + "</td>");
-                            out.println("<td>" + c.getIdClient() + "</td>");
-                            out.println("<td>" + c.getType() + "</td>");
-                            out.println("<td>" + c.getModel() + "</td>");
-                            out.println("<td>" + c.getIp() + "</td>");
+                            out.println("<td>" + a.getClient().getIdclient()+ "</td>");
+                            out.println("<td>" + a.getClient().getType()+ "</td>");
+                            out.println("<td>" + a.getClient().getModel()+ "</td>");
+                            out.println("<td>" + a.getClient().getIp()+ "</td>");
                             out.println("</tr>");
                         }
                     }
-                }
-            } 
+//                }
+//            } 
             out.println("</table>");
             out.println("</div>");
             out.println("</body>");
             out.println("</html>");      
         }
-        for (Address a : addresses) {
-                System.out.println("!!!!!!!! " + a.getIdAddress() + " !!!!!!!!" + a.getCity());
-            }
-            for (Client c : clients) {
-                System.out.println("!!!!!!!! " + c.getModel() + " !!!!!!!!" + c.getType());
-            }
+//        for (Address a : addresses) {
+//                System.out.println("!!!!!!!! " + a.getIdAddress() + " !!!!!!!!" + a.getCity());
+//            }
+//            for (Client c : clients) {
+//                System.out.println("!!!!!!!! " + c.getModel() + " !!!!!!!!" + c.getType());
+//            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
