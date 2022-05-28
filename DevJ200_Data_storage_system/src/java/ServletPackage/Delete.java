@@ -106,14 +106,11 @@ public class Delete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-//        int id = updateBeanLocal.toInt(request.getParameter("id"));
+        int id = updateBeanLocal.toInt(request.getParameter("id"));
 //        updateBeanLocal.removeAddress(id);
-//        updateBeanLocal.removeClient(id);
+        updateBeanLocal.removeClient(id);
         
-////        Viewlist viewlist = new Viewlist();
-////        
-////        addresses = viewlist.addresses;
-////        clients = viewlist.clients;
+
 //        
 ////        addresses = new ArrayList<>();
 ////        clients = new ArrayList<>();

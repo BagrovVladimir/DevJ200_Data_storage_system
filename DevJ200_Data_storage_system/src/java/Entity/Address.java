@@ -78,20 +78,24 @@ public class Address implements Serializable {
 //        this.idaddress = idaddress;
 //    }
 
-    public Address(Integer idaddress, String city, String street, int num) {
-        this.idaddress = idaddress;
+    public Address(String city, String street, int num, int subnum, int flat, String extra, Client client) {
+//        this.idaddress = idaddress;
         this.city = city;
         this.street = street;
         this.num = num;
+        this.subnum = subnum;
+        this.flat = flat;
+        this.extra = extra;
+        this.client = client;
     }
 
     public Integer getIdaddress() {
         return idaddress;
     }
 
-    public void setIdaddress(Integer idaddress) {
-        this.idaddress = idaddress;
-    }
+//    public void setIdaddress(Integer idaddress) {
+//        this.idaddress = idaddress;
+//    }
 
     public String getCity() {
         return city;

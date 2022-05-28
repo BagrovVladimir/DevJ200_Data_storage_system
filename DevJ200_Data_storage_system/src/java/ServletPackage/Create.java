@@ -6,9 +6,8 @@
 package ServletPackage;
 
 import BeanPackage.UpdateBeanLocal;
-import Models.Address;
-import Models.Client;
-import Models.Storage;
+import Entity.Address;
+import Entity.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -29,6 +28,9 @@ public class Create extends HttpServlet {
     
     @EJB
             UpdateBeanLocal updateBeanLocal;
+    
+    Client client;
+    Address address;
     
 //    HttpServletRequest request;
 //    List <Address> addresses;
@@ -84,8 +86,8 @@ public class Create extends HttpServlet {
             out.println("<h1>Create new record</h1>");
             out.println("<form action=\"create\" method=\"POST\">");
             out.println("<h2>Address: </h2>");
-            out.println("<h3>idAddress: </h3>");
-            out.println("<input type=\"text\" name=\"idAddress\"  />");
+//            out.println("<h3>idAddress: </h3>");
+//            out.println("<input type=\"text\" name=\"idAddress\"  />");
             out.println("<h4>city: </h4>");
             out.println(" <input type=\"text\" name=\"city\" />");
             out.println("<h4>street: </h4>");
@@ -98,9 +100,11 @@ public class Create extends HttpServlet {
             out.println("<input type=\"text\" name=\"flat\" />");
             out.println("<h4>extra: </h4>");
             out.println("<input type=\"text\" name=\"extra\" />");
+            out.println("<h4>What a client?: </h4>");
+            out.println("<input type=\"text\" name=\"refByClient\" />");
             out.println("<h2>Client: </h2>");
-            out.println("<h4>idClient: </h4>");
-            out.println("<input type=\"text\" name=\"idClient\" />");
+//            out.println("<h4>idClient: </h4>");
+//            out.println("<input type=\"text\" name=\"idClient\" />");
             out.println("<h4>type: </h4>");
             out.println("<input type=\"text\" name=\"type\" />");
             out.println("<h4>model: </h4>");
@@ -130,15 +134,16 @@ public class Create extends HttpServlet {
 //        this.request = request;
         request.setCharacterEncoding("UTF-8");
         
-        int idAddress = updateBeanLocal.toInt(request.getParameter("idAddress"));
+//        int idAddress = updateBeanLocal.toInt(request.getParameter("idAddress"));
         String city = request.getParameter("city");
         String street = request.getParameter("street");
         int num = updateBeanLocal.toInt(request.getParameter("num"));
         int subnum = updateBeanLocal.toInt(request.getParameter("subnum"));
         int flat = updateBeanLocal.toInt(request.getParameter("flat"));
         String extra = request.getParameter("extra");
+        int refByClient = updateBeanLocal.toInt(request.getParameter("refByClient"));
         
-        int idClient = updateBeanLocal.toInt(request.getParameter("idClient"));
+//        int idClient = updateBeanLocal.toInt(request.getParameter("idClient"));
         String type = request.getParameter("type");
         String model = request.getParameter("model");
         String ip = request.getParameter("ip");
@@ -146,15 +151,17 @@ public class Create extends HttpServlet {
 //        boolean paramAddress = checkParametersAddress(idAddress, city, street, num, extra);
 //        boolean paramClient = checkParametersClient(idClient, type, model, ip);
         
-        boolean paramAddress = updateBeanLocal.checkParametersAddress(idAddress, city, street, num, extra, request);
-        boolean paramClient = updateBeanLocal.checkParametersClient(idClient, type, model, ip, request);
+        boolean paramAddress = updateBeanLocal.checkParametersAddress(city, street, num, extra, request);
+        boolean paramClient = updateBeanLocal.checkParametersClient(type, model, ip, request);
         
         if(!paramAddress || !paramClient){
            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/error");
            dispatcher.forward(request, response);
         } else{
-            updateBeanLocal.addressList(idAddress, city, street, num, subnum, flat, extra);
-            updateBeanLocal.clientList(idClient, type, model, ip);
+            
+            client = updateBeanLocal.getClientById(refByClient);
+            updateBeanLocal.clientList(type, model, ip);
+            updateBeanLocal.addressList(city, street, num, subnum, flat, extra, client);
 //            Address address = new Address(idAddress, city, street, num, subnum, flat, extra);
 ////            addresses = Address.listAddress;
 ////            addresses.add(address);
