@@ -69,8 +69,15 @@ public class Client implements Serializable {
 //        this.idclient = idclient;
 //    }
 
+    public Client(Integer idclient, String type, String model, String ip) {
+        this.idclient = idclient;
+        this.type = type;
+        this.model = model;
+        this.ip = ip;
+    }
+    
     public Client(String type, String model, String ip) {
-//        this.idclient = idclient;
+        this.idclient = idclient;
         this.type = type;
         this.model = model;
         this.ip = ip;
@@ -80,9 +87,9 @@ public class Client implements Serializable {
         return idclient;
     }
 
-//    public void setIdclient(Integer idclient) {
-//        this.idclient = idclient;
-//    }
+    public void setIdclient(Integer idclient) {
+        this.idclient = idclient;
+    }
 
     public String getType() {
         return type;

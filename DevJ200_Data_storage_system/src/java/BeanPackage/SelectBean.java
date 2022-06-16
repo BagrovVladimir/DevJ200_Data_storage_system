@@ -113,7 +113,7 @@ public class SelectBean implements SelectBeanLocal {
 
     @Override
     public List<Client> clientList() {
-        return  em.createNamedQuery("lient.findAll").getResultList();
+        return  em.createNamedQuery("Client.findAll").getResultList();
     }
 
 }

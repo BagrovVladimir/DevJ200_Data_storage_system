@@ -5,8 +5,10 @@
  */
 package ServletPackage;
 
+import Entity.ClientXML;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "MainPage", urlPatterns = {"/*"})
 public class MainPage extends HttpServlet {
+    
+
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,6 +58,13 @@ public class MainPage extends HttpServlet {
             out.println("</form>");
             out.println("<form  action=\"viewlist\" method=\"GET\">");
             out.println("<p><input type=\"submit\" name=\"viewlist\" value=\"Go to View the List of all records\" /></p>");
+            out.println("</form>");
+            out.println("<form  action=\"checksax\" method=\"GET\">");
+            out.println("<p><input type=\"submit\" name=\"checksax\" value=\"Go to View the List of Clients From XML with SAX\" /></p>");
+            out.println("</form>");
+            out.println("<form  action=\"checkdom\" method=\"GET\">");
+            out.println("<p><input type=\"submit\" name=\"checkdom\" value=\"Go to View the List of Clients From XML with DOM\" /></p>");
+            out.println("</form>");
             out.println("<form  action=\"test\" method=\"GET\">");
             out.println("<p><input type=\"submit\" name=\"test\" value=\"Test\" /></p>");
             out.println("</form>");

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<clientsXML>
+    <clientXML idClient = "7" type = "comp" model = "Intel" ip = "192.168.000.003"></clientXML>
+    <clientXML idClient = "8" type = "SmartUpdate" model = "Samsung" ip = "192.168.000.005"></clientXML>
+    <clientXML idClient = "11" type = "Note" model = "Xiomi" ip = "192.168.000.007"></clientXML>
+</clientsXML>

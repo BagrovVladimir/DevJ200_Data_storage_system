@@ -188,12 +188,7 @@ public class UpdateBean implements UpdateBeanLocal {
     public List<Client> removeClient(int id) {
 //        String s = "DELETE c FROM CLIENT c WHERE c.IDCLIENT = " + id;
 //        em.createQuery(s);
-        Client temp2 = null;
-        clients = em.createNamedQuery("Client.findAll").getResultList();
-        for (Client client : clients) {
-            if(client.getIdclient()==id)
-                temp2 = client;  
-        }
+        Client temp2 = em.find(Client.class, id);
         em.remove(temp2);
 //       clients.remove(temp2);
        return em.createNamedQuery("Client.findAll").getResultList();
