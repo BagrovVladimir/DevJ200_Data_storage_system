@@ -21,13 +21,13 @@ public class DemoSAX extends DefaultHandler{
     public void endElement(String uri, String localName, String qName) throws SAXException {
         client = null;
 //        clientXML = null;
-        qName = "";
+        this.qName = "";
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         System.out.println("Begin startElement");
-        this.qName = this.qName;
+        this.qName = qName;
 //        if(qName.equals("clientXML")
         if(qName.equals("client")){
             System.out.println("Before idClient startElement");

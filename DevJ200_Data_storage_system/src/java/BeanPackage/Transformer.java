@@ -47,7 +47,7 @@ public class Transformer implements TransformerLocal {
         CreaterXML.createXML(list);
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser;
-        DemoSAX demoSAX = new DemoSAX();
+        DemoSAX demoSAX = new DemoSAX();       
             try {
                 parser = factory.newSAXParser();
                 try {
